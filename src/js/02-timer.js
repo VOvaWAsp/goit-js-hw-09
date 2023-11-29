@@ -34,13 +34,16 @@ const calendar = flatpickr(datetimePicker, options)
 selectors.startBtn.addEventListener("click", handleClick) 
 
 function handleClick() {
-    setInterval(() => {
+    let timeID = setInterval(() => {
         const { days, hours, minutes, seconds } = convertMs(calendar.selectedDates[0] - new Date());
         selectors.days.textContent = days < 10 ? addLeadingZero(days, 2) : days;
         selectors.hours.textContent = hours < 10 ? addLeadingZero(hours, 2) : hours;
         selectors.minutes.textContent = minutes < 10 ? addLeadingZero(minutes, 2) : minutes;
         selectors.seconds.textContent = seconds < 10 ? addLeadingZero(seconds, 2) : seconds;
 
+        if (days === 0 && hours === 0 && minutes === 0 && seconds === 0) {
+          clearInterval(timeID);
+        }
     }, 1000)
     function addLeadingZero(value, targetLength) {
        return String(value).padStart(targetLength, "0")
@@ -70,4 +73,3 @@ function handleClick() {
 // console.log(convertMs(2000)); // {days: 0, hours: 0, minutes: 0, seconds: 2}
 // console.log(convertMs(140000)); // {days: 0, hours: 0, minutes: 2, seconds: 20}
 // console.log(convertMs(24140000)); // {days: 0, hours: 6 minutes: 42, seconds: 20}
-
